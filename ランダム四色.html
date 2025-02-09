@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>RandomColorScheme</title>
+        <meta charset="utf-8">
+        <style>
+            .rgbContainer{
+                display:flex;
+            }
+            .scheme{
+                box-shadow:6px 3px 5px #000a;
+                margin:25px;
+                padding:5px 5px;
+                border-radius:10px;
+                background-color:"white";
+                transition:transform 0.2s,box-shadow 0.2s;
+            }
+            .scheme:hover{
+                box-shadow:4px 2px 7px #0005;
+                transform:scale(1.2);
+            }
+        </style>
+    </head>
+    <body>
+        <h1>RandomColorScheme</h1>
+        <button id="clear">Clear</button>
+        <div class="rgbContainer">
+            <div>
+                <strong>R : </strong><br>
+                <strong>G : </strong><br>
+                <strong>B : </strong><br>
+            </div>
+            <div>
+                <input type="number" min="0" max="255" step="1" value="0" id="rInputMin"><br>
+                <input type="number" min="0" max="255" step="1" value="0" id="gInputMin"><br>
+                <input type="number" min="0" max="255" step="1" value="0" id="bInputMin"><br>
+            </div>
+            <div>
+                <input type="number" min="0" max="255" step="1" value="255" id="rInputMax"><br>
+                <input type="number" min="0" max="255" step="1" value="255" id="gInputMax"><br>
+                <input type="number" min="0" max="255" step="1" value="255" id="bInputMax"><br>
+            </div>
+        </div>
+        <div id="main"></div>
+        <script>
+            const main=document.getElementById("main");
+            const clearButton=document.getElementById("clear");
+            function getRandomColor(rMin=0,gMin=0,bMin=0,rMax=255,gMax=255,bMax=255){
+                let r,g,b;
+                r=Math.floor(Math.random()*(parseInt(rMax)-parseInt(rMin))+parseInt(rMin)).toString(16).padStart(2,"0")
+                g=Math.floor(Math.random()*(parseInt(gMax)-parseInt(gMin))+parseInt(gMin)).toString(16).padStart(2,"0")
+                b=Math.floor(Math.random()*(parseInt(bMax)-parseInt(bMin))+parseInt(bMin)).toString(16).padStart(2,"0")
+                return `#${r}${g}${b}`;
+            };
+            function scheme(parent,numColors=4,width=40,height=80,rMin=0,gMin=0,bMin=0,rMax=255,gMax=255,bMax=255){
+                let body=document.createElement("div");
+                body.classList.add("scheme");
+                parent.appendChild(body);
+                let paletteContainer=document.createElement("div");
+                paletteContainer.style.display="flex";
+                body.appendChild(paletteContainer);
+                let palettes=[];
+                let paletteColors=[];
+                for (let i=0;i<numColors;i++){
+                    const color=getRandomColor(rMin,gMin,bMin,rMax,gMax,bMax);
+                    palettes.push(document.createElement("div"));
+                    palettes[i].style.textAlign="center";
+                    let palette=document.createElement("div");
+                    palette.style.backgroundColor=color;
+                    palette.style.width=`${width}px`;
+                    palette.style.height=`${height}px`;
+                    palettes[i].appendChild(palette);
+
+                    paletteColors.push(document.createElement("code"));
+                    paletteColors[i].textContent=color;
+                    paletteColors[i].style.fontSize=`${width/4}px`;
+                    palettes[i].appendChild(paletteColors[i]);
+
+                    paletteContainer.appendChild(palettes[i]);
+                };
+                
+            };
+            function schemeContainer(parent,numSchemes=4,rMin=0,gMin=0,bMin=0,rMax=255,gMax=255,bMax=255){
+                let body=document.createElement("div");
+                body.style.display="flex";
+                parent.appendChild(body);
+                for (let i=0;i<numSchemes;i++){
+                    scheme(body,4,60,120,rMin,gMin,bMin,rMax,gMax,bMax);
+                };
+            };
+            function clear(){
+                main.innerHTML="";
+            };
+            function rgb(){
+                const rMin=rInputMin.value;
+                const gMin=gInputMin.value;
+                const bMin=bInputMin.value;
+                const rMax=rInputMax.value;
+                const gMax=gInputMax.value;
+                const bMax=bInputMax.value;
+                return [rMin,gMin,bMin,rMax,gMax,bMax];
+            };
+            window.addEventListener("scroll",function(){
+                if (window.pageYOffset >= document.body.clientHeight-window.innerHeight){
+                for (i=0;i<16;i++){
+                    schemeContainer(main,4,rgb()[0],rgb()[1],rgb()[2],rgb()[3],rgb()[4],rgb()[5]);
+                };
+                };
+            });
+            clearButton.addEventListener("click",function(){
+                clear();
+                for (i=0;i<16;i++){
+                    schemeContainer(main,4,rgb()[0],rgb()[1],rgb()[2],rgb()[3],rgb()[4],rgb()[5]);
+                };
+            });
+            const rInputMin=document.getElementById("rInputMin");
+            const gInputMin=document.getElementById("gInputMin");
+            const bInputMin=document.getElementById("bInputMin");
+            const rInputMax=document.getElementById("rInputMax");
+            const gInputMax=document.getElementById("gInputMax");
+            const bInputMax=document.getElementById("bInputMax");
+            for (i=0;i<16;i++){
+                schemeContainer(main,4,rgb()[0],rgb()[1],rgb()[2],rgb()[3],rgb()[4],rgb()[5]);
+            };
+        </script>
+    </body>
+</html>
