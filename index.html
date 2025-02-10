@@ -4,6 +4,14 @@
         <title>BrilliantPalette</title>
         <meta charset="utf-8">
         <style>
+            @keyframes show{
+                0%{
+                    opacity:0
+                }
+                100%{
+                    opacity:1
+                }
+            }
             body{
                 background-color:#f0f0f0;
             }
@@ -21,6 +29,12 @@
             .scheme:hover{
                 box-shadow:4px 2px 7px #0005;
                 transform:scale(1.2);
+            }
+            .hide{
+                opacity:0;
+            }
+            .show{
+                animation:show 0.2s ease-in 1 forwards;
             }
         </style>
     </head>
@@ -58,6 +72,7 @@
             function scheme(parent,numColors=4,width=40,height=80,rMin=0,gMin=0,bMin=0,rMax=255,gMax=255,bMax=255){
                 let body=document.createElement("div");
                 body.classList.add("scheme");
+                body.classList.add("hide");
                 parent.appendChild(body);
                 let paletteContainer=document.createElement("div");
                 paletteContainer.style.display="flex";
@@ -103,13 +118,19 @@
                 const bMax=bInputMax.value;
                 return [rMin,gMin,bMin,rMax,gMax,bMax];
             };
+            function scrollAnimation(){
+                let elements=document.querySelectorAll(".hide");
+                const height=window.innerHeight;
+                elements.forEach((el) => {if (el.getBoundingClientRect().top < height+100){el.classList.remove("hide");el.classList.add("show");}})
+            }
             window.addEventListener("scroll",function(){
-                if (window.pageYOffset >= document.body.clientHeight-window.innerHeight){
+                if (window.pageYOffset+100 >= document.body.clientHeight-window.innerHeight){
                 for (i=0;i<16;i++){
                     schemeContainer(main,4,rgb()[0],rgb()[1],rgb()[2],rgb()[3],rgb()[4],rgb()[5]);
                 };
                 };
             });
+            document.addEventListener("scroll",scrollAnimation);
             clearButton.addEventListener("click",function(){
                 clear();
                 for (i=0;i<16;i++){
@@ -125,6 +146,7 @@
             for (i=0;i<16;i++){
                 schemeContainer(main,4,rgb()[0],rgb()[1],rgb()[2],rgb()[3],rgb()[4],rgb()[5]);
             };
+            scrollAnimation();
         </script>
     </body>
 </html>
