@@ -124,7 +124,7 @@
                 elements.forEach((el) => {if (el.getBoundingClientRect().top < height+100){el.classList.remove("hide");el.classList.add("show");}})
             }
             window.addEventListener("scroll",function(){
-                if (window.pageYOffset+600 >= document.body.clientHeight-window.innerHeight){
+                if (window.pageYOffset+200 >= document.body.clientHeight-window.innerHeight){
                 for (i=0;i<16;i++){
                     schemeContainer(main,4,rgb()[0],rgb()[1],rgb()[2],rgb()[3],rgb()[4],rgb()[5]);
                 };
@@ -136,6 +136,7 @@
                 for (i=0;i<16;i++){
                     schemeContainer(main,4,rgb()[0],rgb()[1],rgb()[2],rgb()[3],rgb()[4],rgb()[5]);
                 };
+                scrollAnimation();
             });
             const rInputMin=document.getElementById("rInputMin");
             const gInputMin=document.getElementById("gInputMin");
