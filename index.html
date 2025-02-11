@@ -48,14 +48,14 @@
                 <strong>B : </strong><br>
             </div>
             <div>
-                <input type="number" min="-255" max="255" step="1" value="0" id="rInputMin"><br>
-                <input type="number" min="-255" max="255" step="1" value="0" id="gInputMin"><br>
-                <input type="number" min="-255" max="255" step="1" value="0" id="bInputMin"><br>
+                <input type="number" min="-256" max="255" step="1" value="0" id="rInputMin"><br>
+                <input type="number" min="-256" max="255" step="1" value="0" id="gInputMin"><br>
+                <input type="number" min="-256" max="255" step="1" value="0" id="bInputMin"><br>
             </div>
             <div>
-                <input type="number" min="-255" max="255" step="1" value="255" id="rInputMax"><br>
-                <input type="number" min="-255" max="255" step="1" value="255" id="gInputMax"><br>
-                <input type="number" min="-255" max="255" step="1" value="255" id="bInputMax"><br>
+                <input type="number" min="-256" max="255" step="1" value="255" id="rInputMax"><br>
+                <input type="number" min="-256" max="255" step="1" value="255" id="gInputMax"><br>
+                <input type="number" min="-256" max="255" step="1" value="255" id="bInputMax"><br>
             </div>
         </div>
         <div id="main"></div>
@@ -64,9 +64,15 @@
             const clearButton=document.getElementById("clear");
             function getRandomColor(rMin=0,gMin=0,bMin=0,rMax=255,gMax=255,bMax=255){
                 let r,g,b;
-                r=Math.floor(Math.random()*(parseInt(rMax)-parseInt(rMin))+parseInt(rMin)).toString(16).padStart(2,"0")
-                g=Math.floor(Math.random()*(parseInt(gMax)-parseInt(gMin))+parseInt(gMin)).toString(16).padStart(2,"0")
-                b=Math.floor(Math.random()*(parseInt(bMax)-parseInt(bMin))+parseInt(bMin)).toString(16).padStart(2,"0")
+                r=Math.floor(Math.random()*(parseInt(rMax)-parseInt(rMin))+parseInt(rMin));
+                if (r<0){r=256+r}
+                r=r.toString(16).padStart(2,"0");
+                g=Math.floor(Math.random()*(parseInt(gMax)-parseInt(gMin))+parseInt(gMin));
+                if (g<0){g=256+g}
+                g=g.toString(16).padStart(2,"0");
+                b=Math.floor(Math.random()*(parseInt(bMax)-parseInt(bMin))+parseInt(bMin));
+                if (b<0){b=256+b}
+                b=b.toString(16).padStart(2,"0");
                 return `#${r}${g}${b}`;
             };
             function scheme(parent,numColors=4,width=40,height=80,rMin=0,gMin=0,bMin=0,rMax=255,gMax=255,bMax=255){
@@ -110,18 +116,12 @@
                 main.innerHTML="";
             };
             function rgb(){
-                let rMin=parseInt(rInputMin.value);
-                if (rMin<0){rMin=255+rMin};
-                let gMin=parseInt(gInputMin.value);
-                if (gMin<0){gMin=255+gMin};
-                let bMin=parseInt(bInputMin.value);
-                if (bMin<0){bMin=255+bMin};
-                let rMax=parseInt(rInputMax.value);
-                if (rMax<0){rMax=255+rMax};
-                let gMax=parseInt(gInputMax.value);
-                if (gMax<0){gMax=255+gMax};
-                let bMax=parseInt(bInputMax.value);
-                if (bMax<0){bMax=255+bMax};
+                const rMin=rInputMin.value;
+                const gMin=gInputMin.value;
+                const bMin=bInputMin.value;
+                const rMax=rInputMax.value;
+                const gMax=gInputMax.value;
+                const bMax=bInputMax.value;
                 return [rMin,gMin,bMin,rMax,gMax,bMax];
             };
             function scrollAnimation(){
