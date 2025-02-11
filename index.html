@@ -48,14 +48,14 @@
                 <strong>B : </strong><br>
             </div>
             <div>
-                <input type="number" min="0" max="255" step="1" value="0" id="rInputMin"><br>
-                <input type="number" min="0" max="255" step="1" value="0" id="gInputMin"><br>
-                <input type="number" min="0" max="255" step="1" value="0" id="bInputMin"><br>
+                <input type="number" min="-255" max="255" step="1" value="0" id="rInputMin"><br>
+                <input type="number" min="-255" max="255" step="1" value="0" id="gInputMin"><br>
+                <input type="number" min="-255" max="255" step="1" value="0" id="bInputMin"><br>
             </div>
             <div>
-                <input type="number" min="0" max="255" step="1" value="255" id="rInputMax"><br>
-                <input type="number" min="0" max="255" step="1" value="255" id="gInputMax"><br>
-                <input type="number" min="0" max="255" step="1" value="255" id="bInputMax"><br>
+                <input type="number" min="-255" max="255" step="1" value="255" id="rInputMax"><br>
+                <input type="number" min="-255" max="255" step="1" value="255" id="gInputMax"><br>
+                <input type="number" min="-255" max="255" step="1" value="255" id="bInputMax"><br>
             </div>
         </div>
         <div id="main"></div>
@@ -110,12 +110,18 @@
                 main.innerHTML="";
             };
             function rgb(){
-                const rMin=rInputMin.value;
-                const gMin=gInputMin.value;
-                const bMin=bInputMin.value;
-                const rMax=rInputMax.value;
-                const gMax=gInputMax.value;
-                const bMax=bInputMax.value;
+                let rMin=parseInt(rInputMin.value);
+                if (rMin<0){rMin=255+rMin};
+                let gMin=parseInt(gInputMin.value);
+                if (gMin<0){gMin=255+gMin};
+                let bMin=parseInt(bInputMin.value);
+                if (bMin<0){bMin=255+bMin};
+                let rMax=parseInt(rInputMax.value);
+                if (rMax<0){rMax=255+rMax};
+                let gMax=parseInt(gInputMax.value);
+                if (gMax<0){gMax=255+gMax};
+                let bMax=parseInt(bInputMax.value);
+                if (bMax<0){bMax=255+bMax};
                 return [rMin,gMin,bMin,rMax,gMax,bMax];
             };
             function scrollAnimation(){
